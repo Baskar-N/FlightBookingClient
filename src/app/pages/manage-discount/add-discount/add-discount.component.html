@@ -1,0 +1,34 @@
+<div mat-dialog-title>
+    <p>
+        Add Discount
+    </p>
+</div>
+<div mat-dialog-content class="p-3">
+    <form [formGroup]="discountForm" novalidate (ngSubmit)="onRegister()" 
+        autocomplete="false">
+        <div class="d-flex flex-column">
+            <!-- Discount Code -->
+            <mat-form-field class="w-100">
+                <mat-label> Discount Code</mat-label>
+                <input matInput formControlName="discountCode" tabindex="1" maxlength="25">
+                <mat-error *ngIf="checkError('discountCode', 'required')">
+                    Please enter Discount Code.
+                </mat-error>
+            </mat-form-field>
+            <!-- Discount Amount -->
+            <mat-form-field class="w-100">
+                <mat-label> Discount Amount</mat-label>
+                <input matInput formControlName="discountAmount" tabindex="2" maxlength="25">
+                <mat-error *ngIf="checkError('discountAmount', 'required')">
+                    Please select Discount Amount.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="pt-3 text-center">
+            <button mat-raised-button type="submit" color="primary" 
+                tabindex="5">Save</button>
+            <button mat-raised-button type="submit" color="warn"
+            tabindex="6" class="ms-3" (click)="closeForm()">Cancel</button>
+        </div>
+    </form>
+</div>

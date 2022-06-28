@@ -1,0 +1,94 @@
+<div class="d-flex align-item-center p-3">
+    <h2 class="col-10 m-0">Manage Bookings</h2>
+</div>
+<div class="mat-elevation-z8 mx-3">
+    <table id="booking" mat-table [dataSource]="dataSource" class="w-100">
+
+    <!-- Logo Column -->
+    <ng-container matColumnDef="logo" sticky>
+        <th mat-header-cell *matHeaderCellDef> Logo </th>
+        <td mat-cell *matCellDef="let element"> 
+            <img src="{{imagePath + element.Airline?.Logo}}" class="AirlineLogo" alt="logo"/>
+        </td>
+    </ng-container>
+
+    <!-- Flight Number Column -->
+    <ng-container matColumnDef="flightNumber" sticky>
+        <th mat-header-cell *matHeaderCellDef> Flight Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.FlightNumber}} </td>
+    </ng-container>
+
+    <!-- Airline Column -->
+    <ng-container matColumnDef="airline" sticky>
+        <th mat-header-cell *matHeaderCellDef> Airline </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.Airline?.Name}} </td>
+    </ng-container>
+
+    <!-- From Place Column -->
+    <ng-container matColumnDef="fromPlace">
+        <th mat-header-cell *matHeaderCellDef> From Place </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.FromPlace}} </td>
+    </ng-container>
+
+    <!-- To Place Column -->
+    <ng-container matColumnDef="toPlace">
+        <th mat-header-cell *matHeaderCellDef> To Place </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.ToPlace}} </td>
+    </ng-container>
+
+    <!-- Ticket Cost -->
+    <ng-container matColumnDef="ticketCost">
+        <th mat-header-cell *matHeaderCellDef> Ticket Cost </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.TicketCost}} </td>
+    </ng-container>
+
+     <!-- IsBcs -->
+     <ng-container matColumnDef="isBussinessClass">
+        <th mat-header-cell *matHeaderCellDef> IsBussiness Class </th>
+        <td mat-cell *matCellDef="let element"> {{element.IsBcs ? 'Yes' : 'No'}} </td>
+    </ng-container>
+
+     <!-- NumberOfSeats -->
+     <ng-container matColumnDef="numberOfSeats">
+        <th mat-header-cell *matHeaderCellDef> Number Of Seats </th>
+        <td mat-cell *matCellDef="let element"> {{element.NumberOfSeats}} </td>
+    </ng-container>
+
+    <!-- Ticket Pnr -->
+    <ng-container matColumnDef="ticketPnr">
+        <th mat-header-cell *matHeaderCellDef> Ticket PNR </th>
+        <td mat-cell *matCellDef="let element"> {{element.TicketPnr}} </td>
+    </ng-container>
+
+    <!-- Action button -->
+    <ng-container matColumnDef="action" sticky>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" class="text-end"> 
+           <div class="d-flex flex-row justify-content-end">
+            <button mat-stroked-button class="ms-3" color="warn" title="cancel ticket"
+                (click)="doCancelTicket(element.TicketPnr)" *ngIf="canCancelTicket(element)">
+                Cancel
+                <mat-icon class="ps-1">
+                cancel                    
+                </mat-icon>
+            </button>
+                <button mat-stroked-button color="primary" title="download ticket"
+                    (click)="downloadTicket(element.TicketPnr, 'Client')">
+                    Download
+                    <mat-icon class="ps-1">
+                    download                    
+                    </mat-icon>
+                </button>
+           </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons 
+                    aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

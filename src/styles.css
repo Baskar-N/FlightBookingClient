@@ -1,1 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+table td, table th{
+    text-align:  center !important;
+}
+
+.AirlineLogo{
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.SuccessSnackBar {
+    color: #05542f;
+    background: linear-gradient(45deg, #0bfb8c, #85ef85);
+}
+
+.SnackBarFont {
+    font-size: 1rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.DeleteSnackBar {
+    color: white;
+    background: linear-gradient(45deg, #ef0940, #e33866f0);
+}
+
+.example-container {
+    max-height: 300px;
+    width: 1300px;
+    max-width: 100%;
+    overflow: auto;
+}
+  
+.example-container table {
+    width: 1300px;
+} 
+
+.modal{
+    z-index: 999 !important;
+}
+.modal-backdrop{
+    z-index: 998 !important;
+}

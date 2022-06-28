@@ -1,0 +1,107 @@
+<div mat-dialog-title>
+    <p>
+        Add Schedule
+    </p>
+</div>
+<div mat-dialog-content class="p-3">
+    <form [formGroup]="addScheduleForm" (ngSubmit)="onAddSchedule()" autocomplete="off">
+        <div class="ScheduleFormHeight px-3 scrollbarColor">
+            <div class="d-flex align-items-center">
+                <mat-form-field class="col-6 pe-2">
+                    <mat-label>Select Airline</mat-label>
+                    <mat-select formControlName="airlineRecId" tabindex="1">
+                        <mat-option>Clear</mat-option>
+                        <mat-option *ngFor="let airline of data?.airlineList" value="{{airline.airlineId}}">{{airline.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('airlineRecId', 'required')">Please select your airline</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-6 ps-2">
+                    <mat-label>Flight #</mat-label>
+                    <input matInput placeholder="Enter flight #" formControlName="flightNumber" 
+                        tabindex="2" maxlength="25" required>
+                    <mat-error *ngIf="checkError('flightNumber', 'required')">Please enter the flight number.</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex align-items-center pt-2">
+                <mat-form-field class="col-6 pe-2">
+                    <mat-label>From Place</mat-label>
+                    <mat-select formControlName="fromPlace" tabindex="3">
+                        <mat-option>Clear</mat-option>
+                        <mat-option *ngFor="let location of data?.placeList" value="{{location.LocationName}}">{{location.LocationName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('fromPlace', 'required')">Please enter the from place.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-6 ps-2">
+                    <mat-label>To Place</mat-label>
+                    <mat-select formControlName="toPlace" tabindex="4">
+                        <mat-option>Clear</mat-option>
+                        <mat-option *ngFor="let location of data?.placeList" value="{{location.LocationName}}">{{location.LocationName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('toPlace', 'required')">Please enter the to place.</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex align-items-center pt-2">
+                <mat-form-field class="col-6 pe-2">
+                    <mat-label>Start DateTime</mat-label>
+                    <input matInput type="datetime-local" placeholder="Pick the start date" formControlName="startDateTime" tabindex="5" required>
+                    <mat-error *ngIf="checkError('startDateTime', 'required')">Please choose the start date time.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-6 ps-2">
+                    <mat-label>End DateTime</mat-label>
+                    <input matInput type="datetime-local" placeholder="Pick the end date" formControlName="endDateTime" tabindex="6" required>
+                    <mat-error *ngIf="checkError('endDateTime', 'required')">Please choose the end date time.</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex align-items-center pt-2">
+                <mat-form-field class="col-6 pe-2">
+                    <mat-label>Schedule Type</mat-label>
+                    <mat-select formControlName="scheduleTypeRecId" tabindex="1">
+                        <mat-option>Clear</mat-option>
+                        <mat-option *ngFor="let schedule of data?.scheduleTypeList" value="{{schedule.ScheduledDaysRecId}}">{{schedule.ScheduledType}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('scheduleTypeRecId', 'required')">Please enter the scheduled days.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-6 ps-2">
+                    <mat-label>Instrument Used</mat-label>
+                    <mat-select formControlName="instrumentUsed" tabindex="8">
+                        <mat-option>Clear</mat-option>
+                        <mat-option value="A320">A320</mat-option>
+                        <mat-option value="A320 Neo">A320 Neo</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('instrumentUsed', 'required')">Please enter the instrument used.</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex align-items-center pt-2">
+                <mat-form-field class="col-6 pe-2">
+                    <mat-label>No Of Business Class Seats</mat-label>
+                    <input matInput placeholder="Enter the business clas seats" maxlength="7" formControlName="noOfBussinessClsSeats" tabindex="9" required>
+                    <mat-error *ngIf="checkError('noOfBussinessClsSeats', 'required')">Please enter the business class seats.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-6 ps-2">
+                    <mat-label>No Of Non Business Class Seats</mat-label>
+                    <input matInput placeholder="Enter the non business clas seats" maxlength="7" formControlName="noOfNonBussinessClsSeats" tabindex="10" required>
+                    <mat-error *ngIf="checkError('noOfNonBussinessClsSeats', 'required')">Please enter the non business class seats.</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex align-items-center pt-2">
+                <mat-form-field class="col-6 pe-2">
+                    <mat-label>Ticket Cost</mat-label>
+                    <input matInput placeholder="Enter tht ticket cost" maxlength="7" formControlName="ticketCost" tabindex="11" required>
+                    <mat-error *ngIf="checkError('ticketCost', 'required')">Please enter the business class seats.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-6 ps-2">
+                    <mat-label>Meal</mat-label>
+                    <mat-select formControlName="mealTypeRecId" tabindex="12">
+                        <mat-option>Clear</mat-option>
+                        <mat-option *ngFor="let location of data?.mealTypeList" value="{{location.MealTypeRecId}}">{{location.MealType}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="pt-3 text-center">
+            <button type="submit" mat-flat-button color="primary" tabindex="13">Save</button>  
+            <button type="button" mat-flat-button color="warn" class="ms-2"  tabindex="14"
+                (click)="closeForm()">Cancel</button>  
+        </div>        
+    </form>
+</div>

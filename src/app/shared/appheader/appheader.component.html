@@ -1,0 +1,39 @@
+<div class="Header">
+    <div class="Logo"></div>
+    <div class="AppTitle flex-1">{{ appTitle }}</div>
+    <div *ngIf="IsUserLogged" class="d-flex h-100">
+        <div class="NavItem py-3" *ngFor="let item of getMenuItems" [routerLink]="'/'+ item.RouterLink"
+            routerLinkActive="ActiveItem">
+            <div class="px-3 text-center d-flex h-100 border-end NavItem">
+                <a class="d-flex h-100 align-items-center">
+                    {{item.Title}}
+                </a>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="IsUserLogged;then userLogged;else noUserLogged">
+        
+    </ng-container>
+
+    <!-- Logged User template -->
+    <ng-template #userLogged>
+        <div class="d-flex align-items-center">
+            <div class="h-100 ms-3">
+                <span>Welcome,</span>
+                <span class="ps-1">{{authService.fullName}}</span>
+            </div>
+            <mat-icon class="ms-3">person_outline</mat-icon>
+            <button mat-icon-button title="Logout" (click)="authService.Logout()">
+                <mat-icon class="ms-3">power_settings_new</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+
+    <!-- Sign up and Sign In template-->
+    <ng-template #noUserLogged>
+        <div class="d-flex flex-row">
+            <a mat-raised-button routerLink="login">Login</a>
+            <a mat-raised-button routerLink="register" class="ms-3">Register</a>
+        </div>
+    </ng-template>
+</div>

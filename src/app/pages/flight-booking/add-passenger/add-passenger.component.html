@@ -1,0 +1,235 @@
+<div class="d-flex justify-content-center align-items-center1">
+    <div class="border radius shadow col-10 my-3">
+        <div class="d-flex p-3 radius-top border-bottom PanelHeader">
+            <div class="d-flex align-items-center flex-grow-1">
+                <h2 class="m-0">Book </h2>
+                <mat-icon color="warn" class="px-1">flight</mat-icon>
+                <h2 class="m-0 ps-1">Ticket</h2>
+            </div> 
+            <div>
+                <button mat-flat-button color="accent" (click)="returnToSchedule()">Go Back</button>
+            </div>           
+        </div>
+        <div class="p-3 bg-white">
+            <div class="d-flex">
+                <div class="col-6 pe-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <mat-icon mat-fab color="primary">flight_takeoff</mat-icon>
+                        <h2 class="m-0 px-2">{{selectedSchedule?.FromPlace}}</h2>
+                        <mat-icon>arrow_right_alt</mat-icon>
+                        <h2 class="px-2 m-0">{{selectedSchedule?.ToPlace}}</h2>
+                        <mat-icon mat-fab color="primary">flight_land</mat-icon>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around py-3 border-bottom">
+                        <div class="d-flex flex-column">
+                            <span class="font-size-12 text-muted">Airline</span>
+                            <h3 class="m-0">{{selectedSchedule?.Airline?.Name}}</h3>
+                        </div>
+                        <div class="d-flex flex-column ps-2">
+                            <span class="font-size-12 text-muted">Ticket Cost</span>
+                            <h3 class="m-0 text-danger">{{ selectedSchedule?.TicketCost}}</h3>
+                        </div>
+                        <div class="d-flex flex-column ps-2">
+                            <span class="font-size-12 text-muted">Flight #</span>
+                            <h3 class="m-0">{{selectedSchedule?.FlightNumber}}</h3>
+                        </div>
+                    </div>
+                    <div class="text-start py-3">
+                        <div class="d-flex flex-column">
+                            <span class="font-size-12 text-muted">Date of Journey</span>
+                            <h3 class="m-0">{{selectedSchedule?.StartDateTime | date : 'dd/MM/yyyy'}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 px-3 border-start" *ngIf="isRoundTrip">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <mat-icon mat-fab color="primary">flight_takeoff</mat-icon>
+                        <h2 class="m-0 px-2">{{selectedReturnSchedule?.FromPlace}}</h2>
+                        <mat-icon>arrow_right_alt</mat-icon>
+                        <h2 class="px-2 m-0">{{selectedReturnSchedule?.ToPlace}}</h2>
+                        <mat-icon mat-fab color="primary">flight_land</mat-icon>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around py-3 border-bottom">
+                        <div class="d-flex flex-column">
+                            <span class="font-size-12 text-muted">Airline</span>
+                            <h3 class="m-0">{{selectedReturnSchedule?.Airline?.Name}}</h3>
+                        </div>
+                        <div class="d-flex flex-column ps-2">
+                            <span class="font-size-12 text-muted">Ticket Cost</span>
+                            <h3 class="m-0 text-danger">{{ selectedReturnSchedule?.TicketCost}}</h3>
+                        </div>
+                        <div class="d-flex flex-column ps-2">
+                            <span class="font-size-12 text-muted">Flight #</span>
+                            <h3 class="m-0">{{selectedReturnSchedule?.FlightNumber}}</h3>
+                        </div>
+                    </div>
+                    <div class="text-start py-3">
+                        <div class="d-flex flex-column">
+                            <span class="font-size-12 text-muted">Return Date of Journey</span>
+                            <h3 class="m-0">{{selectedReturnSchedule?.StartDateTime | date : 'dd/MM/yyyy'}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex align-items-center flex-wrap pb-3">
+                <div class="d-flex flex-column pe-5">
+                    <span class="font-size-12 text-muted">Name</span>
+                    <div class="m-0 font-size-1rem">{{authService?.fullName}}</div>
+                </div>
+                <div class="d-flex flex-column px-3">
+                    <span class="font-size-12 text-muted">Email Id</span>
+                    <div class="m-0 font-size-1rem">{{authService?.emailId}}</div>
+                </div>
+            </div>
+            
+            <div class="pb-3 d-flex justify-content-between align-items-center">
+                <div class="flex-grow-1 justify-content-center d-flex">
+                    <div class="border p-3 radius shadow PanelHeader">
+                        <mat-radio-group aria-label="Select an option" color="warn" [(ngModel)]="isBusinessClass">
+                            <mat-radio-button value="1">Non-Business Class</mat-radio-button>
+                            <mat-radio-button value="2" class="ps-3">Business Class</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <button mat-flat-button color="primary" class="" (click)="resetFormData()"
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Add Passenger</button>
+            </div>
+
+            <div *ngIf="showPassengers === true">
+                <mat-table [dataSource]="passengerList" class="mat-elevation-z8"> 
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef class="font-size-1rem"> Name </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="age">
+                      <mat-header-cell *matHeaderCellDef class="font-size-1rem"> Age </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.age}} </mat-cell>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="gender">
+                      <mat-header-cell *matHeaderCellDef class="font-size-1rem"> Gender </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
+                    </ng-container>
+                
+                    <ng-container matColumnDef="seatNumber">
+                        <mat-header-cell *matHeaderCellDef class="font-size-1rem"> Seat Number </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.journey?.seatNumber}} </mat-cell>
+                      </ng-container>
+                
+                      <ng-container matColumnDef="returnSeatNumber">
+                        <mat-header-cell *matHeaderCellDef class="font-size-1rem"> Return Seat Number </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.returnJourney?.seatNumber}} </mat-cell>
+                      </ng-container>
+                
+                      <ng-container matColumnDef="delete">
+                        <mat-header-cell *matHeaderCellDef class="font-size-1rem"></mat-header-cell>
+                        <mat-cell class="font-size-1rem justify-content-end"  *matCellDef="let element; let i = index"> 
+                            <button mat-icon-button color="warn" title="delete passenger" (click)="deletePassenger(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                      </ng-container>
+                  
+                    <mat-header-row *matHeaderRowDef="passengerColumns; sticky: true" class="TableHeader"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: passengerColumns;"></mat-row>
+                   
+                </mat-table>
+                <div class="py-3">
+                    <h2 class="m-0 text-primary">Add your Discount here</h2>
+                    <div class="d-flex align-items-center">
+                        <mat-form-field class="example-form-field">
+                            <mat-label>Discount Code</mat-label>
+                            <input [disabled]="isDisableDiscount" matInput type="text" [(ngModel)]="disCode" tabindex="1" maxlength="25">
+                        </mat-form-field>
+                        <button [disabled]="isDisableDiscount" mat-flat-button color="accent" class="ms-4" (click)="onclick_ApplyDiscount()">Apply Discount</button>
+                    </div>                    
+                </div>
+                <div class="text-center py-3">
+                    <button mat-flat-button color="primary" (click)="onclick_bookTicket()">Book</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" 
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" 
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title m-0" id="staticBackdropLabel">Add Passenger</h2>
+          <button type="button" mat-mini-fab data-bs-dismiss="modal" color="warn">
+            <mat-icon color="basic">close</mat-icon>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="passengerFormGroup" (ngSubmit)="onSubmit_passengerDetails()" class="px-3 pb-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Passenger Name</mat-label>
+                    <input matInput placeholder="Enter your passenger name" formControlName="passengerName" tabindex="1" required>
+                    <mat-error *ngIf="checkError('passengerName', 'required')">Please enter your passenger name.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100 pt-1">
+                    <mat-label>Age</mat-label>
+                    <input matInput placeholder="age" maxlength="3" formControlName="age" tabindex="2">
+                    <mat-error *ngIf="checkError('age', 'required')">Please enter your age.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Gender</mat-label>
+                    <mat-select formControlName="gender" tabindex="3">
+                        <mat-option>Clear</mat-option>
+                        <mat-option value="Male">Male</mat-option>
+                        <mat-option value="Female">Female</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('gender', 'required')">Please select your gener.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Seat Number</mat-label>
+                        <mat-select formControlName="seatNumber" tabindex="7">
+                            <mat-option>Clear</mat-option>
+                            <mat-option value="A11">A11</mat-option>
+                            <mat-option value="A12">A12</mat-option>
+                            <mat-option value="B11">B11</mat-option>
+                            <mat-option value="B12">B12</mat-option>
+                            <mat-option value="C11">C11</mat-option>
+                            <mat-option value="C12">C12</mat-option>
+                        </mat-select>
+                    <mat-error *ngIf="checkError('seatNumber', 'required')">Please select your seat number.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100" *ngIf="isRoundTrip === true">
+                    <mat-label>Return Seat Number</mat-label>
+                        <mat-select formControlName="returnSeatNumber" tabindex="7">
+                            <mat-option>Clear</mat-option>
+                            <mat-option value="A11">A11</mat-option>
+                            <mat-option value="A12">A12</mat-option>
+                            <mat-option value="B11">B11</mat-option>
+                            <mat-option value="B12">B12</mat-option>
+                            <mat-option value="C11">C11</mat-option>
+                            <mat-option value="C12">C12</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="checkReturnSeat()">Please select your return seat number.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Meal Type</mat-label>
+                    <mat-select formControlName="mealTypeRecId" tabindex="8">
+                        <mat-option>Clear</mat-option>
+                        <mat-option *ngFor="let mealType of mealTypeList" 
+                            value="{{mealType.mealTypeRecId}}">{{mealType.mealType}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="checkError('mealTypeRecId', 'required')">Please select your meal type.</mat-error>
+                </mat-form-field>
+                <div class="pt-3 text-center">
+                    <button type="submit" mat-flat-button color="primary" tabindex="5" data-bs-dismiss="modal"
+                    [disabled]="passengerFormGroup?.invalid" >Save</button>  
+                    <button type="button" mat-flat-button color="warn" class="ms-2"  tabindex="6"
+                        data-bs-dismiss="modal">Cancel</button>  
+                </div>        
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>

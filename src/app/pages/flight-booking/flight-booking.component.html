@@ -1,0 +1,165 @@
+<div class="p-3" *ngIf="!isShowBookModal;else bookingFlight">
+    <div class="pt-3 pb-2 border radius shadow-sm position-relative bg-light">
+        <div class="position-absolute shadow-sm bg-white pe-2 top-0 d-flex py-1">
+            <mat-icon class="fas fa-filter SmallCaption Font-Icon-Color ps-1" color="primary">search</mat-icon>
+        </div>
+        <div class="d-flex flex-wrap align-items-center px-5">
+            <mat-form-field class="example-form-field">
+                <mat-label>From Place</mat-label>
+                <mat-select [(ngModel)]="fromPlace" tabindex="1">
+                    <mat-option>Clear</mat-option>
+                    <mat-option *ngFor="let location of placeList" 
+                        value="{{location?.locationName}}">{{location?.locationName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-form-field ps-4">
+                <mat-label>To Place</mat-label>
+                <mat-select [(ngModel)]="toPlace" tabindex="2" >
+                    <mat-option>Clear</mat-option>
+                    <mat-option *ngFor="let location of placeList" 
+                        value="{{location?.locationName}}">{{location?.locationName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="ps-4">
+                <mat-label>Start Journey</mat-label>
+                <input matInput type="datetime-local" placeholder="Pick the start date" [(ngModel)]="startJourney"
+                    tabindex="3">
+            </mat-form-field>
+            <mat-form-field class="ps-4" *ngIf="oneWayOrRound === '2'">
+                <mat-label>Return Journey</mat-label>
+                <input matInput type="datetime-local" placeholder="Pick the end date" [(ngModel)]="returnJourney"
+                    tabindex="4">
+            </mat-form-field>
+
+            <button mat-flat-button color="accent" (click)="searchFlight()" class="ms-4">Apply</button>
+        </div>
+    </div>
+    <div class="pt-4">
+        <div class="pb-3">
+            <mat-radio-group aria-label="Select an option" color="warn" [(ngModel)]="oneWayOrRound">
+                <mat-radio-button value="1">One way</mat-radio-button>
+                <mat-radio-button value="2" class="ps-3">Round trip</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="example-container mat-elevation-z8 scrollbarColor">
+            <table mat-table [dataSource]="schedules">
+
+                <ng-container matColumnDef="logo" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Logo </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <img src="{{imagePath + element.Airline?.Logo}}" class="AirlineLogo" alt="logo"/>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="airline" sticky>
+                    <th mat-header-cell *matHeaderCellDef > Airline </th>
+                    <td mat-cell *matCellDef="let element" > {{element.Airline?.Name}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="flightNumber" sticky>
+                    <th mat-header-cell *matHeaderCellDef > Flight # </th>
+                    <td mat-cell *matCellDef="let element"> {{element.FlightNumber}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fromPlace">
+                    <th mat-header-cell *matHeaderCellDef > From Place </th>
+                    <td mat-cell *matCellDef="let element">{{element.FromPlace}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="toPlace">
+                    <th mat-header-cell *matHeaderCellDef > To Place </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ToPlace}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="seatsAvailable">
+                    <th mat-header-cell *matHeaderCellDef > Bus. seats / Non-Bus. seats </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Bcs}} / {{element.NonBcs}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="ticketCost">
+                    <th mat-header-cell *matHeaderCellDef> Ticket Cost </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.TicketCost}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="instrumentUsed">
+                    <th mat-header-cell *matHeaderCellDef > Instrument Used </th>
+                    <td mat-cell *matCellDef="let element" > {{element.InstrumentUsed}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="TableHeader"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="rowClick_Schedule(row, 1)"
+                    [ngClass]="row?.scheduleRecId === selectedScheduleRow?.scheduleRecId ? 'OneWayRowSelection' : ''"></tr>
+            </table>
+        </div>
+        <div *ngIf="oneWayOrRound === '2'" class="py-3">
+            <h2 class="">Select your return flight.</h2>
+            <div class="example-container mat-elevation-z8 scrollbarColor">
+                <table mat-table [dataSource]="roundWaySchedules">
+                    <ng-container matColumnDef="logo" sticky>
+                        <th mat-header-cell *matHeaderCellDef > Logo </th>
+                        <td mat-cell *matCellDef="let element" > 
+                            <img src="{{imagePath + element.Airline?.Logo}}" class="AirlineLogo" alt="logo"/>    
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="flightNumber" sticky>
+                        <th mat-header-cell *matHeaderCellDef > Flight # </th>
+                        <td mat-cell *matCellDef="let element" > {{element.FlightNumber}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="airline" sticky>
+                        <th mat-header-cell *matHeaderCellDef > Airline Name </th>
+                        <td mat-cell *matCellDef="let element" > {{element.Airline?.Name}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="fromPlace">
+                        <th mat-header-cell *matHeaderCellDef > From Place </th>
+                        <td mat-cell *matCellDef="let element" >{{element.FromPlace}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="toPlace">
+                        <th mat-header-cell *matHeaderCellDef > To Place </th>
+                        <td mat-cell *matCellDef="let element" > {{element.ToPlace}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="seatsAvailable">
+                        <th mat-header-cell *matHeaderCellDef > Bus. seats / Non-Bus. seats </th>
+                        <td mat-cell *matCellDef="let element" >
+                            {{element.Bcs}} / {{element.NonBcs}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ticketCost">
+                        <th mat-header-cell *matHeaderCellDef > TicketCost </th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.TicketCost}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="instrumentUsed">
+                        <th mat-header-cell *matHeaderCellDef > Instrument Used </th>
+                        <td mat-cell *matCellDef="let element" > {{element.InstrumentUsed}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mealType">
+                        <th mat-header-cell *matHeaderCellDef >Meal</th>
+                        <td mat-cell *matCellDef="let element" > {{element.MealType}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" class="TableHeader"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="rowClick_Schedule(row, 2)"
+                        [ngClass]="row?.scheduleRecId === selectedRoundTripScheduleRow?.scheduleRecId ? 'RoundtripRowSelection' : ''"></tr>
+                </table>
+            </div>
+        </div>
+        <div class="pt-3 text-center">
+            <button mat-flat-button color="primary" (click)="navigateToBook()">Book</button>
+        </div>
+    </div>
+</div>
+
+<ng-template #bookingFlight>
+    <router-outlet></router-outlet>
+</ng-template>

@@ -1,0 +1,32 @@
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="form" novalidate (ngSubmit)="onLogin()" autocomplete="false">
+            <h2>Log In</h2>
+            <!-- Login Failed Error -->
+            <mat-error *ngIf="loginInValid" class="LoginFailed">
+                The username and password were not recognized
+            </mat-error>
+
+            <mat-form-field>
+                <mat-label> EmailId</mat-label>
+                <input #emailIdInput matInput formControlName="emailId" tabindex="1" >
+                <mat-error>
+                    Please enter the valid email id
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label> Password </mat-label>
+                <input #passwordInput matInput formControlName="password" tabindex="2"
+                [type]="hide ? 'password' : 'text'">
+                <mat-icon matSuffix (click)="hide = !hide">
+                    {{hide ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
+                <mat-error>
+                    Please enter the valid password
+                </mat-error>
+            </mat-form-field>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid"
+                tabindex="3">Login</button>
+        </form>
+    </mat-card-content>
+</mat-card>

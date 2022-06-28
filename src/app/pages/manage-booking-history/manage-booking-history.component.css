@@ -1,0 +1,11 @@
+.Completed{
+    color: green;
+}
+
+.Cancelled{
+    color:red;
+}
+
+.OnBoarding{
+    color: mediumslateblue;
+}

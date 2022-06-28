@@ -1,0 +1,32 @@
+.Header{
+    height: 64px;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    padding: 0 16px;
+    width: 100%;
+    white-space: nowrap;
+    background: #5d108d;
+    color: white;
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+.AppTitle{
+    font-size: 30px;
+    padding: 0 16px;
+    flex: 1;
+}
+
+.ActiveItem{
+    background: #4f1672;
+}
+
+.NavItem{
+    border-color: #7a7878 !important;
+    cursor: pointer;
+}
+
+.NavItem a{
+    text-decoration: none;
+    color: white;
+}

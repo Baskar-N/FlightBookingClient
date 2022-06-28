@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  base_url: "http://localhost:9000/gateway/",
+  statusCode401 : 401, // Unauthorized
+  statusCode201 : 201, // Created
+  statusCode200 : 200, // Ok
 };
 
 /*

@@ -1,0 +1,107 @@
+<div class="d-flex align-item-center p-3">
+    <h2 class="m-0">Manage Bookings</h2>
+</div>
+<div class="pt-3 pb-2 border radius shadow-sm position-relative bg-light mx-3 mb-3">
+    <div class="position-absolute shadow-sm bg-white pe-2 top-0 d-flex py-1">
+        <mat-icon class="ps-1" color="primary">search</mat-icon>
+    </div>
+    <div class="d-flex align-items-center px-4">
+        <div>
+            <mat-radio-group aria-label="Select an option" color="warn" [(ngModel)]="filterType">
+            <mat-radio-button value="email">Email Id</mat-radio-button>
+            <mat-radio-button value="pnr" class="ps-3">PNR Number</mat-radio-button>
+        </mat-radio-group>
+        </div>
+
+        <div class="ps-4">
+            <mat-form-field class="example-form-field" *ngIf="filterType === 'email'">
+                <mat-label>Email Id</mat-label>
+                <input matInput type="text" [(ngModel)]="emailId" tabindex="1" maxlength="50">
+            </mat-form-field>
+            <mat-form-field class="example-form-field" *ngIf="filterType === 'pnr'">
+                <mat-label>PNR #</mat-label>
+                <input matInput type="text" [(ngModel)]="pnr" tabindex="2">
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" class="ms-4" (click)="doSearch()">Apply</button>
+        </div>
+    </div>       
+</div>
+<div class="mat-elevation-z8 mx-3">
+    <table mat-table [dataSource]="dataSource" class="w-100">
+
+    <!-- Logo Column -->
+    <ng-container matColumnDef="logo">
+        <th mat-header-cell *matHeaderCellDef> Logo </th>
+        <td mat-cell *matCellDef="let element"> 
+            <img src="{{imagePath + element.Airline?.Logo}}" class="AirlineLogo" alt="logo"/>
+        </td>
+    </ng-container>
+
+    <!-- Flight Number Column -->
+    <ng-container matColumnDef="flightNumber">
+        <th mat-header-cell *matHeaderCellDef> Flight Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.FlightNumber}} </td>
+    </ng-container>
+
+    <!-- Airline Column -->
+    <ng-container matColumnDef="airline">
+        <th mat-header-cell *matHeaderCellDef> Airline </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.Airline?.Name}} </td>
+    </ng-container>
+
+    <!-- From Place Column -->
+    <ng-container matColumnDef="fromPlace">
+        <th mat-header-cell *matHeaderCellDef> From Place </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.FromPlace}} </td>
+    </ng-container>
+
+    <!-- To Place Column -->
+    <ng-container matColumnDef="toPlace">
+        <th mat-header-cell *matHeaderCellDef> To Place </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.ToPlace}} </td>
+    </ng-container>
+
+    <!-- Ticket Cost -->
+    <ng-container matColumnDef="ticketCost">
+        <th mat-header-cell *matHeaderCellDef> Ticket Cost </th>
+        <td mat-cell *matCellDef="let element"> {{element.Schedule?.TicketCost}} </td>
+    </ng-container>
+
+     <!-- IsBcs -->
+     <ng-container matColumnDef="isBussinessClass">
+        <th mat-header-cell *matHeaderCellDef> IsBussiness Class </th>
+        <td mat-cell *matCellDef="let element"> {{element.IsBcs ? 'Yes' : 'No'}} </td>
+    </ng-container>
+
+     <!-- NumberOfSeats -->
+     <ng-container matColumnDef="numberOfSeats">
+        <th mat-header-cell *matHeaderCellDef> Number Of Seats </th>
+        <td mat-cell *matCellDef="let element"> {{element.NumberOfSeats}} </td>
+    </ng-container>
+
+    <!-- Ticket Pnr -->
+    <ng-container matColumnDef="ticketPnr">
+        <th mat-header-cell *matHeaderCellDef> Ticket PNR </th>
+        <td mat-cell *matCellDef="let element"> {{element.TicketPnr}} </td>
+    </ng-container>
+
+    <!-- Boarding button -->
+    <ng-container matColumnDef="boardingStatus">
+        <th mat-header-cell *matHeaderCellDef> Boarding Status </th>
+        <td mat-cell *matCellDef="let element">
+            <div class="{{getStatus(element)}}">
+                {{getStatus(element)}}
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons 
+                    aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

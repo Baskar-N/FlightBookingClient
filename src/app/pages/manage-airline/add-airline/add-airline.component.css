@@ -1,0 +1,17 @@
+.Custom-File-Upload{
+    position: relative;
+    display: flex;
+    height: calc(1.5em + 0.75rem + 2px);
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.Custom-File-Upload input{
+    z-index: 2;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}

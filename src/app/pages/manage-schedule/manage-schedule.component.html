@@ -1,0 +1,96 @@
+<div class="d-flex align-item-center p-3">
+    <h2 class="col-10 m-0">Manage Schedules</h2>
+    <div class="col-2 text-end">
+      <button mat-stroked-button color="primary" title="add schedule"
+          (click)="showAddScheduleModal()">
+          Add Schedule
+          <mat-icon class="ps-1">
+               add           
+          </mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="TableContainer mat-elevation-z8 mx-3">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+    
+        <!-- Flight Number Column -->
+        <ng-container matColumnDef="flightNumber" sticky>
+          <th mat-header-cell *matHeaderCellDef> Flight Number </th>
+          <td mat-cell *matCellDef="let element"> {{element.FlightNumber}} </td>
+        </ng-container>
+    
+        <!-- Airline Name Column -->
+        <ng-container matColumnDef="airline" sticky>
+          <th mat-header-cell *matHeaderCellDef> Airline </th>
+          <td mat-cell *matCellDef="let element"> {{element.Airline?.Name}} </td>
+        </ng-container>
+    
+        <!-- From Place Column -->
+        <ng-container matColumnDef="fromPlace">
+          <th mat-header-cell *matHeaderCellDef> From Place </th>
+          <td mat-cell *matCellDef="let element" > {{element.FromPlace}} </td>
+        </ng-container>
+    
+        <!-- To Place Column -->
+        <ng-container matColumnDef="toPlace">
+          <th mat-header-cell *matHeaderCellDef> To Place </th>
+          <td mat-cell *matCellDef="let element"> {{element.ToPlace}} </td>
+        </ng-container>
+
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDateTime">
+            <th mat-header-cell *matHeaderCellDef> Start Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.StartDateTime | date :'dd/MM/yyyy' }} </td>
+        </ng-container>
+
+        <!-- End Date Column -->
+        <ng-container matColumnDef="endDateTime">
+            <th mat-header-cell *matHeaderCellDef> End Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.EndDateTime | date :'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <!-- Scheduled Days -->
+        <ng-container matColumnDef="scheduledType">
+            <th mat-header-cell *matHeaderCellDef> Scheduled Type </th>
+            <td mat-cell *matCellDef="let element" > {{element.ScheduleType}} </td>
+        </ng-container>
+
+        <!-- Instrument Used -->
+        <ng-container matColumnDef="instrumentUsed">
+            <th mat-header-cell *matHeaderCellDef> Instrument Used </th>
+            <td mat-cell *matCellDef="let element" > {{element.InstrumentUsed}} </td>
+        </ng-container>
+
+        <!-- No.of Bcs -->
+        <ng-container matColumnDef="bcs">
+            <th mat-header-cell *matHeaderCellDef> Non Bussiness Class </th>
+            <td mat-cell *matCellDef="let element" > {{element.NonBcs}} </td>
+        </ng-container>
+
+        <!-- No.of Non-Bcs -->
+        <ng-container matColumnDef="nonBcs">
+            <th mat-header-cell *matHeaderCellDef> Non Bussiness Class </th>
+            <td mat-cell *matCellDef="let element" > {{element.NonBcs}} </td>
+        </ng-container>
+
+         <!-- Ticket Cost -->
+         <ng-container matColumnDef="ticketCost">
+            <th mat-header-cell *matHeaderCellDef> Ticket Cost </th>
+            <td mat-cell *matCellDef="let element" > {{element.TicketCost}} </td>
+        </ng-container>
+  
+        <!-- Meal Type  -->
+        <ng-container matColumnDef="mealType">
+            <th mat-header-cell *matHeaderCellDef> Meal Type </th>
+            <td mat-cell *matCellDef="let element" > {{element.MealType}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                     showFirstLastButtons 
+                     aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div>

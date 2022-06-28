@@ -1,0 +1,72 @@
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="registerForm" novalidate (ngSubmit)="onRegister()" 
+            autocomplete="false">
+            <h2>New User Registration</h2>
+
+            <div class="d-flex flex-row">
+                <!-- First Name -->
+                <mat-form-field class="w-50">
+                    <mat-label> First Name</mat-label>
+                    <input matInput formControlName="firstName" tabindex="1" maxlength="25">
+                    <mat-error *ngIf="checkError('firstName', 'required')">
+                        Please enter your First Name.
+                    </mat-error>
+                </mat-form-field>
+                <!-- Last Name -->
+                <mat-form-field class="ms-3 w-50">
+                    <mat-label> Last Name</mat-label>
+                    <input matInput formControlName="lastName" tabindex="2" maxlength="25">
+                    <mat-error *ngIf="checkError('lasttName', 'required')">
+                        Please enter your Last Name.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex flex-row">
+                <!-- Email ID -->
+                <mat-form-field class="w-100">
+                    <mat-label> Email Id</mat-label>
+                    <input matInput formControlName="emailId" tabindex="3" maxlength="25">
+                    <mat-error *ngIf="checkError('emailId', 'required')">
+                        Please enter the your Email Id.
+                    </mat-error>
+                    <mat-error *ngIf="checkError('emaildId', 'pattern')">
+                        Please enter the valid Email Id.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="d-flex flex-row">
+                <!-- Password -->
+                <mat-form-field class="w-50">
+                    <mat-label> Password </mat-label>
+                    <input matInput formControlName="password" tabindex="4" maxlength="25"
+                    [type]="hide ? 'password' : 'text'">
+                    <mat-icon matSuffix (click)="hide = !hide">
+                        {{hide ? 'visibility_off' : 'visibility'}}
+                    </mat-icon>
+                    <mat-error *ngIf="checkError('password', 'required')">
+                        Please enter the your password.
+                    </mat-error>
+                    <mat-error *ngIf="checkError('password', 'pattern')">
+                        Password must be 8 digit, atleast 1 lowercase, uppercase and special character
+                    </mat-error>
+                </mat-form-field>
+                <!-- Confirm Password -->
+                <mat-form-field class="ms-3 w-50">
+                    <mat-label> Confirm Password </mat-label>
+                    <input matInput type="password" formControlName="confirmPassword" tabindex="5" maxlength="25">
+                    <mat-error *ngIf="checkError('confirmPassword', 'mustMatch')">
+                        Confirm Password has mismatched.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pt-3 text-center">
+                <button mat-raised-button type="submit" color="primary" 
+                    tabindex="6">Register</button>
+                <button mat-raised-button type="submit" color="warn"
+                tabindex="7" class="ms-3" (click)="cancelRegistration()">Cancel</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
